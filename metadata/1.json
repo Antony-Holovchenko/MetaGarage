@@ -1,0 +1,58 @@
+{
+    "name": "Porsche 911 GT3",
+    "mileage": "10000",
+    "description": "A brand new Porsche 911 GT3 with low mileage, purchaised in official dealer.",
+    "location": "Ukraine, Kyiv",
+    "image": "ipfs://bafybeif7zvo6ri45yp5etynzvlnfxnpl37335bqiykronyzdgapvc6m2om",
+    "id": "1",
+    "attributes": [
+        {
+            "trait_type": "Purchase Price",
+            "value": 100
+        },
+        {
+            "trait_type": "Number of owners",
+            "value": "1"
+        },
+        {
+            "trait_type": "Year Built",
+            "value": 2022
+        },
+        {
+            "trait_type": "Transmission",
+            "value": "Automatic"
+        },
+        {
+            "trait_type": "Engine capacity",
+            "value": 3000
+        },
+        {
+            "trait_type": "Motor power",
+            "value": 500
+        },
+        {
+            "trait_type": "Fuel Type",
+            "value": "Petrol"
+        },
+        {
+            "trait_type": "Roadworthy",
+            "value": "Yes"
+        },
+        {
+            "trait_type": "Accident-damaged vehicle",
+            "value": "No"
+        },
+        {
+            "trait_type": "Exterior colour",
+            "value": "Black"
+        },
+        {
+            "trait_type": "Assistance systems",
+            "value": ["ABS", "ESP"]
+        },
+        {
+            "trait_type": "Other features",
+            "value": ["Sport seats","Carbon interior"]
+        }
+    ]
+}
