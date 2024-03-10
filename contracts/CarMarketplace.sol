@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: Unlicense
+//SPDX-License-Identifier: MIT
 pragma solidity 0.8.22;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
@@ -39,6 +39,11 @@ contract CarMarketplace is ReentrancyGuard {
         uint256 newPrice
     );
 
+    event Withdrowal(
+        uint256 amount,
+        address receiver
+    );
+
     error InvalidPriceValue(uint256 price);
     error MarketplaceNotApproved();
     error NftAlreadyListed(address nftAddress, uint256 tokenId);
@@ -59,7 +64,8 @@ contract CarMarketplace is ReentrancyGuard {
     mapping(address => bool) private s_registeredUsers;
 
     /**
-     * @dev This modifier checks that user connected his wallet to application.
+     * @dev This modifier checks that 
+     * user connected his wallet to application.
      * Means user should be registered 
      */
     modifier onlyRegistered(address user) {
@@ -176,9 +182,9 @@ contract CarMarketplace is ReentrancyGuard {
         if(_price <= 0){
             revert InvalidPriceValue(_price);
         } 
-         //check that Marketplace is approved to transfer token to another account
+         //check that Marketplace is approved to transfer token to another account in the future
         IERC721 nft = IERC721(_nftAddress);
-        if (nft.getApproved(_tokenId) != address(this)) {
+        if (nft.getApproved(_tokenId) != address(this)) { //getApproved() - returns approved account that can interract with 'tokenID'
             revert MarketplaceNotApproved();
         }
         s_listings[_nftAddress][_tokenId] = ListedItem({ //add new listed item
@@ -207,7 +213,8 @@ contract CarMarketplace is ReentrancyGuard {
         external 
         payable  
         nonReentrant
-        isListed(_nftAddress, _tokenId) 
+        isListed(_nftAddress, _tokenId)
+        onlyRegistered(msg.sender) 
     {
         ListedItem memory item = s_listings[_nftAddress][_tokenId];
         if(msg.value != item.price) { //make sure user will sent enough money first
@@ -271,16 +278,20 @@ contract CarMarketplace is ReentrancyGuard {
     }
 
     /**
-     * @dev This fundtion will transfer an amount of tokens
-     * to user who calling this function. Transfer process can
-     * be done only if "s_withdrawBalance" of the user is > 0.
+     * @dev This function will send a balance amount to balance owner.
+     *  Transfer process canbe done only if "s_withdrawBalance" of the user is > 0.
+     * 
+     * Emits {Withdrawal} event.
      */
     function withdrawBalance() external {
-        uint256 amount = s_withdrawBalance[msg.sender];
-        require(s_withdrawBalance[msg.sender] > 0, "Nothing to withdraw");
+        address user = msg.sender;
+        uint256 amount = s_withdrawBalance[user];
+        require(s_withdrawBalance[user] > 0, "Nothing to withdraw");
         
-        s_withdrawBalance[msg.sender] = 0;
-        (bool success, ) = payable(msg.sender).call{value: amount}("");
+        s_withdrawBalance[user] = 0;
+        (bool success, ) = payable(user).call{value: amount}("");
         require(success, "Transaction failed");
+
+        emit Withdrowal(amount, user);
     }
 }

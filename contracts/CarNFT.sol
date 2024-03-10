@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: Unlicense
+//SPDX-License-Identifier: MIT
 pragma solidity 0.8.22;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -28,7 +28,7 @@ contract CarNFT is ERC721URIStorage { //inheriting ERC721URIStorage, because thi
     function getTotalSupply() public view returns(uint256) {
         return s_totalTokenSupply;
     }  
-    
+
     /**
      * @dev Mints new car nft and set up a token URI. 
      * Minter, should pay a mint fee to create new nft.
