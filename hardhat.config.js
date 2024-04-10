@@ -1,6 +1,8 @@
 require("hardhat-deploy")
 require("dotenv").config()
 require("@nomicfoundation/hardhat-verify")
+require("@nomicfoundation/hardhat-ethers")
+require("@nomicfoundation/hardhat-chai-matchers")
 
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL ||
 "https://eth-sepolia.g.alchemy.com/v2/NqoJF8sEpupebeYO6XSfyJlMk8QdENkj"
@@ -29,6 +31,9 @@ module.exports = {
   namedAccounts: {
     deployer: {
       default: 0
+    },
+    user1: {
+      default: 1
     }
   },
   etherscan: {
@@ -39,7 +44,7 @@ module.exports = {
   solidity: {
     compilers: [
       {
-        version: "0.8.22"
+        version: "0.8.24"
       }
     ]
   }
