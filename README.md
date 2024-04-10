@@ -1,4 +1,4 @@
-# Car marketplace NFT Dapp
+# Car marketplace NFT(RWA) Dapp
 
 ## Technology Stack & Tools
 
@@ -17,14 +17,14 @@
 `$ npm install`
 
 ### 3. Run tests
-`$ npx hardhat test`
+`$ npm run ht`
 
 ### 4. Start Hardhat node
 `$ npx hardhat node`
 
 ### 5. Run deployment script
 In a separate terminal execute:
-`$ npx hardhat deploy --"network"`
+`$ npm run hd --"network"`
 
 ### 7. Start frontend
 `$ npm run start`
