@@ -32,8 +32,8 @@ module.exports = {
     networkConfig,
     developmentChains,
     VERIFICATION_BLOCK_CONFIRMATIONS,
-    frontEndContractsFile,
+    /* frontEndContractsFile,
     frontEndContractsFile2,
     frontEndAbiLocation,
-    frontEndAbiLocation2,
+    frontEndAbiLocation2, */
 }
