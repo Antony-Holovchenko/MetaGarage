@@ -9,7 +9,7 @@ const { getMintFuncTxReceipt } = require("../../utils/helpers")
     let contract, carNft, user1, user2, txReceipt
     const URI = "Test URI"
     const MINT_FEE = ethers.parseEther("0.01")
-    const WRONG_MINT_FEE = ethers.parseEther("0.001")
+    const WRONG_MINT_FEE = ethers.parseEther("0.002")
     
     beforeEach("Set up a contract for testing", async () => {
         [ ,user1,user2 ] = await ethers.getSigners()
