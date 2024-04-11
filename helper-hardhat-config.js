@@ -31,9 +31,5 @@ const VERIFICATION_BLOCK_CONFIRMATIONS = 6
 module.exports = {
     networkConfig,
     developmentChains,
-    VERIFICATION_BLOCK_CONFIRMATIONS,
-    frontEndContractsFile,
-    frontEndContractsFile2,
-    frontEndAbiLocation,
-    frontEndAbiLocation2,
+    VERIFICATION_BLOCK_CONFIRMATIONS
 }
