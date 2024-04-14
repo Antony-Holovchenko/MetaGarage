@@ -10,15 +10,15 @@ const { getMintFuncTxReceipt } = require("../../utils/helpers")
     const provider = ethers.provider
     const URI = "Test URI"
     const MINT_FEE = ethers.parseEther("1") // Mint fee which = to specified mint fee during deployment
-    const GREATER_MINT_FEE = ethers.parseEther("2") // Mint fee which is greater that specified mint fee during deployment(for testing)
-    const WRONG_MINT_FEE = ethers.parseEther("0.5") // Mint fee which is less than specified mint fee during deployment(for testing)
+    const GREATER_MINT_FEE = ethers.parseEther("2") // Mint fee which is > specified mint fee during deployment(for testing)
+    const WRONG_MINT_FEE = ethers.parseEther("0.5") // Mint fee which is < specified mint fee during deployment(for testing)
     
     beforeEach("Set up a contract for testing", async () => {
         [ deployer, user1, user2 ] = await ethers.getSigners()
 
         //deploy contract for tests
         await deployments.fixture(["carnft"]) // take a deploy script with "carnft" tag and deploy it
-        contract = (await deployments.get("CarNFT")).address; //receive a depoyed contract information(means address, ABI, bytecode ...)
+        contract = (await deployments.get("CarNFT")).address; //receive a deployed contract information(means address, ABI, bytecode ...)
         carNft = await ethers.getContractAt("CarNFT", contract) //receive a contract instance
     })
 
@@ -40,7 +40,7 @@ const { getMintFuncTxReceipt } = require("../../utils/helpers")
       describe("Positive mint function testing", () => {
         beforeEach(async () => {
             userBalanceBeforeMinting = await provider.getBalance(user1.address)
-            txReceipt = await getMintFuncTxReceipt(carNft, user1, URI, GREATER_MINT_FEE) // sending a greated mint fee that needed, to test mechanism of refund rest of the value to user
+            txReceipt = await getMintFuncTxReceipt(carNft, user1, URI, GREATER_MINT_FEE) // sending a greater mint fee that needed, to test mechanism of refund rest of the value to user
         })
 
         it("Verify a successfull nft minting", async () => {

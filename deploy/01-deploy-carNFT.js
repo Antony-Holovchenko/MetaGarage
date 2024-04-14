@@ -6,7 +6,7 @@ const { BigNumber } = require("bignumber.js")
 module.exports = async({deployments, getNamedAccounts}) => {
     const { deployer } = await getNamedAccounts()
     const { deploy, log } = deployments
-    const mintFee = ethers.parseEther("1") // 1 Eher or 1000000000000000000 wei as a mint fee(for testing purpose)
+    const mintFee = ethers.parseEther("1") // 1 Ether or 1000000000000000000 wei as a mint fee(for testing purpose)
     
     log("============ Deploying contract on " + network.name + " network ============")
 
