@@ -1,4 +1,4 @@
-const { network } = require("hardhat")
+const { network, ethers } = require("hardhat")
 const { verify } = require("../utils/verify")
 const { VERIFICATION_BLOCK_CONFIRMATIONS, developmentChains } = require("../helper-hardhat-config")
 const { BigNumber } = require("bignumber.js")
@@ -6,8 +6,8 @@ const { BigNumber } = require("bignumber.js")
 module.exports = async({deployments, getNamedAccounts}) => {
     const { deployer } = await getNamedAccounts()
     const { deploy, log } = deployments
-    const mintFee = new BigNumber(0.01).times(1e18).toFixed(0) //0.01 ETH; toFixed() - converts value to a string with zero decimal place
-
+    const mintFee = ethers.parseEther("1") // 1 Ether or 1000000000000000000 wei as a mint fee(for testing purpose)
+    
     log("============ Deploying contract on " + network.name + " network ============")
 
     const carnft = await deploy("CarNFT", {
