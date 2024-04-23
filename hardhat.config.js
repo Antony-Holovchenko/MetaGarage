@@ -5,6 +5,11 @@ require("@nomicfoundation/hardhat-ethers")
 require("@nomicfoundation/hardhat-chai-matchers")
 
 
+/*
+1) Please don't forget to configure your .env file
+with SEPOLIA_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY.
+So that you will be able to launch, test, interract with the project.
+*/ 
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
