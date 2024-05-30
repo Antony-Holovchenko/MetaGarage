@@ -15,7 +15,7 @@ module.exports = async({deployments, getNamedAccounts}) => {
   }
   
 
-  console.log("============ Deploying contract on " + network.name + " network ============")
+  console.log(`============ Deploying CarMarketplace on ${network.name}  network ============`)
   
   const marketplace = await deploy("CarMarketplace", {
     from: deployer,
@@ -26,7 +26,7 @@ module.exports = async({deployments, getNamedAccounts}) => {
     : VERIFICATION_BLOCK_CONFIRMATIONS
   })
   
-  console.log("============ Successfully deployed! ============")
+  console.log(`============ Successfully deployed! ============`)
   
   if(!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
     await verify(marketplace.address, marketplace.args)
