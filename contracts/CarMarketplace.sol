@@ -1,10 +1,12 @@
 //SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
+pragma solidity 0.8.25;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./PriceConverter.sol";
+import { CarMarketplaceErrors } from "./interfaces/CustomErrors.sol";
+
 
 // "list" new car nft item +
 // "buy" car nft item +
@@ -12,7 +14,7 @@ import "./PriceConverter.sol";
 // "update" listed nft 
 // "withdraw", if you sell an nft item, then you can withdraw money from the marketplace
 
-contract CarMarketplace is ReentrancyGuard {
+contract CarMarketplace is ReentrancyGuard, CarMarketplaceErrors {
     //apply our library functions for uint256
     using PriceConverter for uint256;
     
@@ -49,14 +51,6 @@ contract CarMarketplace is ReentrancyGuard {
         address receiver
     );
 
-    error InvalidPriceValue(uint256 price);
-    error MarketplaceNotApproved();
-    error NftAlreadyListed(address nftAddress, uint256 tokenId);
-    error NotOwner(address spender);
-    error NftNotListed(address nftAddress, uint256 tokenId);
-    error InvalidPaymentValue(address nftAddress, uint256 tokenId, uint256 expectedAmount, uint256 givenAmount);
-    error UserNotRegistered(address user);
-
     // This struct helps to track each item in the "s_listings"
     struct ListedItem {
         uint256 priceInEth;
@@ -77,7 +71,7 @@ contract CarMarketplace is ReentrancyGuard {
      */
     modifier onlyRegistered(address user) {
         if(!s_registeredUsers[user]) {
-            revert UserNotRegistered(user);
+            revert CarMarketplace_UserNotRegistered(user);
         }
         _;
     }
@@ -93,7 +87,7 @@ contract CarMarketplace is ReentrancyGuard {
     modifier notListed(address nftAddress, uint256 tokenId) {
         ListedItem memory item = s_listings[nftAddress][tokenId];
         if(item.priceInEth > 0 && item.priceInUsd > 0) {
-            revert NftAlreadyListed(nftAddress, tokenId);
+            revert CarMarketplace_NftAlreadyListed(nftAddress, tokenId);
         }
         _;
     }
@@ -110,7 +104,7 @@ contract CarMarketplace is ReentrancyGuard {
     modifier isListed(address nftAddress, uint256 tokenId) {
         ListedItem memory item = s_listings[nftAddress][tokenId];
         if(item.priceInEth < 0 && item.priceInUsd < 0) {
-            revert NftNotListed(nftAddress, tokenId);
+            revert CarMarketplace_NftNotListed(nftAddress, tokenId);
         }
         _;
     }
@@ -132,7 +126,7 @@ contract CarMarketplace is ReentrancyGuard {
         IERC721 nft = IERC721(nftAddress);
         address owner = nft.ownerOf(tokenId);
         if (spender != owner) {
-            revert NotOwner(spender);
+            revert CarMarketplace_NotOwner(spender);
         }
         _;
     }
@@ -195,12 +189,12 @@ contract CarMarketplace is ReentrancyGuard {
         onlyRegistered(msg.sender) //make sure user connected his wallet in app
     {
         if(_priceInEth <= 0){
-            revert InvalidPriceValue(_priceInEth);
+            revert CarMarketplace_InvalidPriceValue(_priceInEth);
         } 
          //check that Marketplace is approved to transfer token to another account in the future
         IERC721 nft = IERC721(_nftAddress);
         if (nft.getApproved(_tokenId) != address(this)) { //getApproved() - returns approved account that can interract with 'tokenID'
-            revert MarketplaceNotApproved();
+            revert CarMarketplace_MarketplaceNotApproved();
         }
         s_listings[_nftAddress][_tokenId] = ListedItem({ //add new listed item
             priceInEth: _priceInEth,
@@ -234,7 +228,7 @@ contract CarMarketplace is ReentrancyGuard {
     {
         ListedItem memory item = s_listings[_nftAddress][_tokenId];
         if(msg.value != item.priceInEth) { //make sure user will sent enough money first
-            revert InvalidPaymentValue(_nftAddress, _tokenId, item.priceInEth, msg.value);
+            revert CarMarketplace_InvalidPaymentValue(_nftAddress, _tokenId, item.priceInEth, msg.value);
         }
             
         s_withdrawBalance[item.seller] += msg.value;
@@ -296,7 +290,7 @@ contract CarMarketplace is ReentrancyGuard {
 
     /**
      * @dev This function will send a balance amount to balance owner.
-     *  Transfer process canbe done only if "s_withdrawBalance" of the user is > 0.
+     * Transfer process canbe done only if "s_withdrawBalance" of the user is > 0.
      * 
      * Emits {Withdrawal} event.
      */
