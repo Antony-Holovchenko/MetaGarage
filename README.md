@@ -1,4 +1,4 @@
-# Car marketplace NFT(RWA) Dapp
+# Car marketplace NFT Dapp
 
 ## Technology Stack & Tools
 
