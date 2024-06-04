@@ -8,12 +8,7 @@ module.exports = async({deployments, getNamedAccounts}) => {
   const chainId = network.config.chainId
   let priceFeed
 
-  if(developmentChains.includes(network.name)) {
-    priceFeed = "0x0000000000000000000000000000000000000000" 
-  } else {
-    priceFeed = networkConfig[chainId]["ethUsdPriceFeed"]  
-  }
-  
+  priceFeed = networkConfig[chainId]["ethUsdPriceFeed"]
 
   console.log(`============ Deploying CarMarketplace on ${network.name}  network ============`)
   

@@ -62,19 +62,6 @@ contract CarMarketplace is ReentrancyGuard, CarMarketplaceErrors {
     //NFT contract address --> NFT tokenId --> ListedItem | this mapping store all listed items on the marketplace
     mapping(address => mapping(uint256 => ListedItem)) private s_listings;
     mapping(address => uint256) private s_withdrawBalance;
-    mapping(address => bool) private s_registeredUsers;
-
-    /**
-     * @dev This modifier checks that 
-     * user connected his wallet to application.
-     * Means user should be registered 
-     */
-    modifier onlyRegistered(address user) {
-        if(!s_registeredUsers[user]) {
-            revert CarMarketplace_UserNotRegistered(user);
-        }
-        _;
-    }
 
     /**
      * @dev This modifier checks if the item is not yet listed on the Marketplace.
@@ -186,7 +173,6 @@ contract CarMarketplace is ReentrancyGuard, CarMarketplaceErrors {
         external 
         notListed(_nftAddress, _tokenId) //make sure nft not lister yet
         isOwner(_nftAddress, _tokenId, msg.sender) //make sure that only nft owner can list nft
-        onlyRegistered(msg.sender) //make sure user connected his wallet in app
     {
         if(_priceInEth <= 0){
             revert CarMarketplace_InvalidPriceValue(_priceInEth);
@@ -224,7 +210,6 @@ contract CarMarketplace is ReentrancyGuard, CarMarketplaceErrors {
         payable  
         nonReentrant
         isListed(_nftAddress, _tokenId)
-        onlyRegistered(msg.sender) 
     {
         ListedItem memory item = s_listings[_nftAddress][_tokenId];
         if(msg.value != item.priceInEth) { //make sure user will sent enough money first
