@@ -7,7 +7,7 @@ const { getMintFuncTxReceipt } = require("../../utils/helpers")
 ? describe.skip
 :describe("CarNFT Tests", function() {
     let contract, carNft, user1, user2, deployer, txReceipt, userBalanceBeforeMinting
-    const provider = ethers.provider
+    const PROVIDER = ethers.provider
     const URI = "Test URI"
     const MINT_FEE = ethers.parseEther("1") // Mint fee which = to specified mint fee during deployment
     const GREATER_MINT_FEE = ethers.parseEther("2") // Mint fee which is > specified mint fee during deployment(for testing)
@@ -39,7 +39,7 @@ const { getMintFuncTxReceipt } = require("../../utils/helpers")
     
       describe("Positive mint function testing", () => {
         beforeEach(async () => {
-            userBalanceBeforeMinting = await provider.getBalance(user1.address)
+            userBalanceBeforeMinting = await PROVIDER.getBalance(user1.address)
             txReceipt = await getMintFuncTxReceipt(carNft, user1, URI, GREATER_MINT_FEE) // sending a greater mint fee that needed, to test mechanism of refund rest of the value to user
         })
 
@@ -67,10 +67,10 @@ const { getMintFuncTxReceipt } = require("../../utils/helpers")
 
         it("Verify if user send mint fee > than required, then the rest of his sent value should be returned", async () => {
             const gasSpent = txReceipt.gasUsed * txReceipt.gasPrice
-            const userBalanceAfterMinting = await provider.getBalance(user1.address)
+            const userBalanceAfterMinting = await PROVIDER.getBalance(user1.address)
             const expectedUserBalanceAfterMinting = userBalanceBeforeMinting - (MINT_FEE + gasSpent)
             const expectedContractBalance = MINT_FEE // balance of the contract = MINT_FEE, because during the deployment MINT_FEE is set to 1 ether
-            const actualContractBalance = await provider.getBalance(txReceipt.to)
+            const actualContractBalance = await PROVIDER.getBalance(txReceipt.to)
             
             expect(userBalanceAfterMinting).to.equal(expectedUserBalanceAfterMinting) // use ethers.formatEther(<value in wei>) if u want to compare ether values instead of wei
             expect(actualContractBalance).to.equal(expectedContractBalance) // verifying that contract should be funded only with MINT_FEE value specified in the smart contract, no less, no more
