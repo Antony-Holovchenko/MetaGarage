@@ -1,5 +1,5 @@
 # Car marketplace NFT Dapp
-
+NFT platform for buying and selling car nfts. 
 ## Technology Stack & Tools
 
 - Solidity (Writing Smart Contracts & Tests)
@@ -12,6 +12,7 @@
 
 ## Setting Up
 ### 1. Clone/Download the Repository
+`https://github.com/Antony-Holovchenko/MetaGarage.git`
 
 ### 2. Install Dependencies:
 `$ npm install`

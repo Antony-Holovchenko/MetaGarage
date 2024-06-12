@@ -13,4 +13,5 @@ artifacts
 npm-debug.log*
 
 # coverage
+coverage
 coverage.json

@@ -63,7 +63,6 @@ contract CarNFT is ERC721URIStorage, Pausable, Ownable, CarNFTErrors{ //inheriti
         } 
 
         emit CarMinted(msg.sender, tokenId, tokenURI);            
-        return tokenId;
     }
     
     /**

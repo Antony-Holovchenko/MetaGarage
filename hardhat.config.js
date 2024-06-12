@@ -3,6 +3,7 @@ require("dotenv").config()
 require("@nomicfoundation/hardhat-verify")
 require("@nomicfoundation/hardhat-ethers")
 require("@nomicfoundation/hardhat-chai-matchers")
+require('solidity-coverage')
 
 
 /*
