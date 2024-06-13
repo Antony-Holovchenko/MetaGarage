@@ -285,14 +285,15 @@ const { callListItemFunc, getBal, callBuyItemFunc, callCancelItemFunc, callUpdIt
             .to.be.revertedWith("Nothing to withdraw")
         })
         
-        // This test should be fixed(Still in development)
-        /* it("Reentrancy", async() => {
+        it("Reentrancy call is failed", async() => {
+            // create instance of the MockReentrancyAttack contract
             reentrancyMockContract = (await deployments.get("MockReentrancyAttack")).address
             reentrancy = await ethers.getContractAt("MockReentrancyAttack", reentrancyMockContract)
+            // minting - approving - listing from attack contract
             await reentrancy.prepareForAttack(carnftContract, marketplaceContract, URI, 2, {value: MINT_FEE}) 
             await marketplace.connect(user2).buyItem(carnftContract, 2, {value: PRICE})
-            await reentrancy.attack()
-        }) */
+            await expect(reentrancy.attack()).to.be.revertedWith("Transaction failed")
+        })
     })
 
     describe("Testing getListedItem function", () => {
