@@ -29,39 +29,15 @@ contract CarNFT is ERC721URIStorage, Pausable, Ownable, CarNFTErrors{ //inheriti
      */
     function getTotalSupply() external view returns(uint256) {
         return s_totalTokenSupply;
-    }  
-    
-    /**
-     * @dev Function for pause the contract. Means we
-     * can pause the contract in case of "attack" for example and 
-     * and "mint" function won't work when the contract is paused.
-     */
-    function pauseContract() private onlyOwner {
-        _pause();
     }
 
     /**
-     * @dev Function for unpause the contract. Means we
-     * can unpause the contract once the problem will be solved, and 
-     * and "mint" function will work again.
-     */
-    function unpauseContract() private onlyOwner {
-        _unpause();
-    }
-
-    /**
-     * @dev Function for cahnging ownership over the contract.
-     * @param newOwner - address of the new contract owner.
-     */
-    function changeOwnership(address newOwner) private {
-        transferOwnership(newOwner);
-    }
-
-    /**
-     * @dev Mints new car nft and set up a token URI. 
+     * @dev Mints new nft and set up a token URI. 
      * Minter, should pay a mint fee to create new nft.
-     * If mint fee is < MINT_FEE, then function will be reverted with
+     * If msg.value < MINT_FEE, then function will be reverted with
      * "IncorrectMintFeeValue" error. Function returns an id of created token.
+     * 
+     * Emits {CarMinted} event.
      * 
      * @param tokenURI - a URI that points to token metadata, that is stored off-chain. 
      */
@@ -87,6 +63,33 @@ contract CarNFT is ERC721URIStorage, Pausable, Ownable, CarNFTErrors{ //inheriti
         } 
 
         emit CarMinted(msg.sender, tokenId, tokenURI);            
-        return tokenId;
+    }
+    
+    /**
+     * @dev Function pausing the contract. Set the contract 
+     * on pause in case of "attack" for example and 
+     * all functions with "whenNotPaused" modifier won't 
+     * work when the contract is on pause.
+     */
+    function pauseContract() private onlyOwner {
+        _pause();
+    }
+
+    /**
+     * @dev Function unpausing the contract. Set
+     * the contract to unpaused state(e.g: once the problem will be solved),
+     * and all functions with "whenNotPaused" modifier will 
+     * work again.
+     */
+    function unpauseContract() private onlyOwner {
+        _unpause();
+    }
+
+    /**
+     * @dev Function cahnging ownership over the contract.
+     * @param newOwner - address of the new contract owner.
+     */
+    function changeOwnership(address newOwner) private {
+        transferOwnership(newOwner);
     }
 }
