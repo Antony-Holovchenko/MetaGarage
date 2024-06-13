@@ -293,6 +293,8 @@ const { callListItemFunc, getBal, callBuyItemFunc, callCancelItemFunc, callUpdIt
             await reentrancy.prepareForAttack(carnftContract, marketplaceContract, URI, 2, {value: MINT_FEE}) 
             await marketplace.connect(user2).buyItem(carnftContract, 2, {value: PRICE})
             await expect(reentrancy.attack()).to.be.revertedWith("Transaction failed")
+            expect(await reentrancy.getBalance()).to.equal(0)
+            expect(await getBal(marketplaceContract)).to.equal(ethers.parseEther("2"))
         })
     })
 

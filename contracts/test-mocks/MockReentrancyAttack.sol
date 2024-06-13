@@ -25,10 +25,6 @@ contract MockReentrancyAttack {
         carNFT.approve(_marketplace, _tokenID);
         marketplace.listItem(_carNFT, _tokenID, 1000000000000000000);
     }
-    
-    function buyItem(address _carNFT, uint256 _tokenID) public payable {
-        marketplace.buyItem{value: msg.value}(_carNFT, _tokenID);
-    }
 
     function attack() public {
         marketplace.withdrawBalance(); 
