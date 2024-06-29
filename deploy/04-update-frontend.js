@@ -1,5 +1,6 @@
 const { network } = require("hardhat")
 const fs = require("fs")
+require("dotenv").config()
 
 const frontEndContractsFile = "../car-nft-marketplace-frontend/constants/networkMapping.json"
 
@@ -11,9 +12,11 @@ module.exports = async () => {
         const chainId = network.config.chainId.toString()
         const contractAddressesFrontend =  JSON.parse(fs.readFileSync(frontEndContractsFile, "utf8"))
         //if address for the contract doesn't exist, we create a new one
-        if(!contractAddressesFrontend[chainId]["CarMarketplace"].includes(carMarketplaceContractAddress)) {
-            contractAddressesFrontend[chainId]["CarMarketplace"].push(carMarketplaceContractAddress)
-            console.log("Successfully add new address")
+        if(chainId in contractAddressesFrontend) {
+            if(!contractAddressesFrontend[chainId]["CarMarketplace"].includes(carMarketplaceContractAddress)) {
+                contractAddressesFrontend[chainId]["CarMarketplace"].push(carMarketplaceContractAddress)
+                console.log("Successfully add new address")
+            }
         } else {
             // if exists, we update it
             contractAddressesFrontend[chainId]["CarMarketplace"] = {
