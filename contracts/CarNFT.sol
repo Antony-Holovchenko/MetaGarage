@@ -15,6 +15,7 @@ contract CarNFT is ERC721URIStorage, Pausable, Ownable, CarNFTErrors{ //inheriti
         string indexed tokenURI
     );
 
+    string public constant TOKEN_URI = "ipfs://bafkreic22d7pikuunqvslcv6gq3nq6yhhhvozpb7afsr47g3n4mv3745ee";
     uint256 public s_totalTokenSupply;
     uint256 public immutable MINT_FEE;
 
@@ -30,6 +31,14 @@ contract CarNFT is ERC721URIStorage, Pausable, Ownable, CarNFTErrors{ //inheriti
     function getTotalSupply() external view returns(uint256) {
         return s_totalTokenSupply;
     }
+
+    function tokenURI(uint256 tokenId) public pure override returns (string memory) {
+        if(tokenId == 0) {
+           revert carNFT_QueryUriForNonExToken(tokenId);
+        }
+        return TOKEN_URI;
+    }
+
 
     /**
      * @dev Mints new nft and set up a token URI. 
