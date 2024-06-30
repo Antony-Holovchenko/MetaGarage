@@ -9,6 +9,12 @@ interface CarNFTErrors {
      * @param minter Address of the user who tries to call a mint function
      */
     error CarNFT_IncorrectMintFeeValue(uint256 passedMintFee, uint256 reuiredMintFee, address minter);
+
+    /**
+     * @dev Indicates that user call a tokenURI function for non existent token.
+     * @param tokenId Address of the user who tries to call a mint function
+     */
+    error carNFT_QueryUriForNonExToken(uint256 tokenId);
 }
 
 interface CarMarketplaceErrors {
