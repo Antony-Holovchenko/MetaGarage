@@ -5,7 +5,6 @@ require("@nomicfoundation/hardhat-ethers")
 require("@nomicfoundation/hardhat-chai-matchers")
 require('solidity-coverage')
 require("@chainlink/env-enc").config();
-config()
 
 
 /*
