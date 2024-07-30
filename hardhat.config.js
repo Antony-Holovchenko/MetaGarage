@@ -4,6 +4,8 @@ require("@nomicfoundation/hardhat-verify")
 require("@nomicfoundation/hardhat-ethers")
 require("@nomicfoundation/hardhat-chai-matchers")
 require('solidity-coverage')
+require("@chainlink/env-enc").config();
+config()
 
 
 /*
@@ -18,7 +20,7 @@ module.exports = {
       chainId: 31337,
     },
     sepolia: {
-      url: process.env.SEPOLIA_RPC_URL,
+      url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
       accounts: [process.env.PRIVATE_KEY],
       chainId: 11155111,
       blockConfirmations: 6

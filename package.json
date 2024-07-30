@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@chainlink/contracts": "^0.8.0",
+    "@chainlink/env-enc": "^1.0.5",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
     "@nomicfoundation/hardhat-ethers": "^3.0.5",
     "@nomicfoundation/hardhat-verify": "^2.0.6",
